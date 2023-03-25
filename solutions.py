@@ -41,7 +41,11 @@ def normalize(self):
     {}
     """
     "*** YOUR CODE HERE ***"
-    raiseNotDefined()
+    total = self.total()
+    if total != 0:
+        for i in self.keys():
+            self[i] = self[i] / total
+    #raiseNotDefined()
 
 def sample(self):
     """
@@ -65,7 +69,19 @@ def sample(self):
     0.0
     """
     "*** YOUR CODE HERE ***"
-    raiseNotDefined()
+    keys = list(self.keys())
+    total = self.total()
+    r = random.random() * total
+    sum = 0
+    index = 0
+    for v in self.values():
+        sum += v
+        if sum > r:
+            return keys[index]
+        else:
+            index += 1
+    return keys[index]
+    #raiseNotDefined()
 
 
 def getObservationProb(self, noisyDistance, pacmanPosition, ghostPosition, jailPosition):

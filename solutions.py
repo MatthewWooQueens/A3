@@ -140,4 +140,16 @@ def elapseTime(self, gameState):
     current position is known.
     """
     "*** YOUR CODE HERE ***"
-    raiseNotDefined()
+    temp = dict()
+    for ghostPos in self.allPositions:
+        newPosDist = self.getPositionDistribution(gameState, ghostPos)
+        for newGhostPos in newPosDist.keys():
+            try:
+                temp[newGhostPos] += newPosDist[newGhostPos] * self.beliefs[newGhostPos]
+            except:
+                temp[newGhostPos] = newPosDist[newGhostPos] * self.beliefs[newGhostPos]
+    for k in temp.keys():
+        if self.beliefs[k] != 0:
+            self.beliefs[k] = temp[k]
+    self.beliefs.normalize()
+    #raiseNotDefined()

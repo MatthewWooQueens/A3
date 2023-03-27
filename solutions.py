@@ -140,16 +140,17 @@ def elapseTime(self, gameState):
     current position is known.
     """
     "*** YOUR CODE HERE ***"
-    temp = dict()
+    temp = util.Counter(dict())
+
     for ghostPos in self.allPositions:
         newPosDist = self.getPositionDistribution(gameState, ghostPos)
         for newGhostPos in newPosDist.keys():
             try:
-                temp[newGhostPos] += newPosDist[newGhostPos] * self.beliefs[newGhostPos]
+                temp[newGhostPos] += newPosDist[newGhostPos] * self.beliefs[ghostPos]
             except:
-                temp[newGhostPos] = newPosDist[newGhostPos] * self.beliefs[newGhostPos]
+                temp[newGhostPos] = newPosDist[newGhostPos] * self.beliefs[ghostPos]
+    temp[gameState.getPacmanPosition()] = 0
     for k in temp.keys():
-        if self.beliefs[k] != 0:
-            self.beliefs[k] = temp[k]
+        self.beliefs[k] = temp[k]
     self.beliefs.normalize()
     #raiseNotDefined()

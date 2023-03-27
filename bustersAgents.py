@@ -148,5 +148,28 @@ class GreedyBustersAgent(BustersAgent):
 
 
         "*** YOUR CODE HERE ***"
+        ghostLikely = []
+        for ghostDist in livingGhostPositionDistributions:
+            ghostKeys = list(ghostDist.keys())
+            temp = ghostKeys[0]
+            for ghostPos in ghostKeys[1:]:
+                if ghostDist[temp] < ghostDist[ghostPos]:
+                    temp = ghostPos
+            ghostLikely.append(temp)
+        
+        pos = ghostLikely[0]
+        maze = self.distancer.getDistance(pacmanPosition, pos)
+        for tempPos in ghostLikely[1:]:
+            tempMaze = self.distancer.getDistance(pacmanPosition, pos)
+            if tempMaze < maze:
+                maze = tempMaze
+                pos = tempPos
 
-
+        action = legal[0]
+        successorPos = Actions.getSuccessor(pacmanPosition, legal[0])
+        for l in legal[1:]:
+            tempSuccessorPos = Actions.getSuccessor(pacmanPosition, l)
+            if self.distancer.getDistance(successorPos, pos) > self.distancer.getDistance(tempSuccessorPos, pos):
+                successorPos = tempSuccessorPos
+                action = l
+        return action
